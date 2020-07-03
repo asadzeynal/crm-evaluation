@@ -9,9 +9,9 @@
             <div class="card">
                 @if(env('FILESYSTEM_DRIVER') === 's3')
                 <!-- Hardcoded for demonstration purposes -->
-                    <img class="card-img-top" src="http://crmeval.s3.eu-central-1.amazonaws.com/public/logos/{{ $company->logo }}" alt="logo">
+                    <img class="card-img-top" style="width: 100%; height: 15vw; object-fit: contain;" src="http://crmeval.s3.eu-central-1.amazonaws.com/public/logos/{{ $company->logo }}" alt="logo">
                 @elseif(env('FILESYSTEM_DRIVER') === 'local')
-                    <img class="card-img-top" src="/storage/logos/{{ $company->logo }}" alt="logo">
+                    <img class="card-img-top" style="width: 100%; height: 15vw; object-fit: contain;" src="/storage/logos/{{ $company->logo }}" alt="logo">
                 @endif
                 <div class="card-body">
                     <h5 class="card-title">{{ $company->name }}</h5>
