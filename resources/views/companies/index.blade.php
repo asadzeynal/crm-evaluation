@@ -7,7 +7,12 @@
         <div class="col-md-4">
             <a href="/companies/{{ $company->id }}">
                 <div class="card" style="width: 18rem;">
-                    <img class="card-img-top" src="/storage/logos/{{ $company->logo }}" alt="company logo">
+                    @if(env('FILESYSTEM_DRIVER') === 's3')
+                    <!-- Hardcoded for demonstration purposes -->
+                        <img class="card-img-top" src="http://crmeval.s3.eu-central-1.amazonaws.com/public/logos/{{ $company->logo }}" alt="logo">
+                    @elseif(env('FILESYSTEM_DRIVER') === 'local')
+                        <img class="card-img-top" src="/storage/logos/{{ $company->logo }}" alt="logo">
+                    @endif
                     <div class="card-body">
                         <p class="card-text"><a href="/companies/{{ $company->id }}">{{ $company -> name }}</a></p>
                     </div>
