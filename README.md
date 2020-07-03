@@ -1,85 +1,127 @@
-<p align="center"><img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1566331377/laravel-logolockup-cmyk-red.svg" width="400"></p>
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+# CRM Evaluation Project
 
-## About Laravel
+This project is a demo of a basic CRM system involving companies and employees.
+  
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Deployed version: <a  href="http://crmeval.herokuapp.com/">App</a>
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+  
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Getting Started
+  
 
-## Learning Laravel
+### Prerequisites
+The easiest way to run the application is by setting up <a  href="https://laravel.com/docs/7.x/homestead">Laravel Homestead</a> vagrant box.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+If you decide not to use Homestead, you can run a project locally as a regular laravel app.  
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+For your comfort, the project has already been deployed and the link is included above.
 
-## Laravel Sponsors
+This project requires a database. I used MariaDB, you are free to use any relational database. 
+The list of environment variables is presented at the end of the page. 
+#### Setup
+As this project is a standard laravel app, you should have laravel installed on your pc. Setup your database and enter the properties into the .env. You can skip the mail configuration for now and for simplicity set file storage as local instead of s3. Run the migrations. Run the user seeder. Note that it is too early to run the employee seeder, as it uses random company id, but the companies are not there yet. Now you can start the app and test it. 
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+**Note:** For your comfort, this app was deployed on heroku, so you can skip the deployment if you wish. The link is in the first section of this page.
+  
 
-### Premium Partners
+## Project Details
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
+### Frontend
+The project was  scaffolded using the laravel/ui package with default auth scaffolding. There is a template to perform every CRUD operation on Employees and Companies. These are standard blade templates. The templates heavily use bootstrap classes and layout.
 
-### Community Sponsors
+### Database
+There are two main entities stored in the database: Employees and Companies. They are related by a one-to-many relationship where Company hasMany(employees). It is worth mentioning that the default Users table exists, but as the registration routes are disabled, only seeded admin user is stored there. All tables are created by Migrations. 
 
-<a href="https://op.gg"><img src="http://opgg-static.akamaized.net/icon/t.rectangle.png" width="150"></a>
+Company fields:
+ - name			
+ - email
+ - website
+ - logo (filename)
 
-- [UserInsights](https://userinsights.com)
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
-- [CodeBrisk](https://codebrisk.com)
-- [1Forge](https://1forge.com)
-- [TECPRESSO](https://tecpresso.co.jp/)
-- [Runtime Converter](http://runtimeconverter.com/)
-- [WebL'Agence](https://weblagence.com/)
-- [Invoice Ninja](https://www.invoiceninja.com)
-- [iMi digital](https://www.imi-digital.de/)
-- [Earthlink](https://www.earthlink.ro/)
-- [Steadfast Collective](https://steadfastcollective.com/)
-- [We Are The Robots Inc.](https://watr.mx/)
-- [Understand.io](https://www.understand.io/)
-- [Abdel Elrafa](https://abdelelrafa.com)
-- [Hyper Host](https://hyper.host)
-- [Appoly](https://www.appoly.co.uk)
-- [云软科技](http://www.yunruan.ltd/)
+Employee fields:
+ - first_name			
+ - last_name
+ - email
+ - phone_number
+ - company_id (fk)
+#### Factories and seeders
+The company factory was not used, but the employee factory was used and modified. When creating an employee using the factory, he is assigned a random company from the existing ones. The seeder creates 150 employees. Be careful not to create employees before the companies.
+#### Controllers
 
-## Contributing
+Besides the default controllers, CompanyController and EmployeeController are introduced. They are busy with basic CRUD operations. Both controllers apply "auth" middleware to their routes in constructor to prevent unauthorized access to the functionality.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+#### Routes
+The routes are defined in a single web.php file. 
 
-## Code of Conduct
+#### Mail
+The email messages are sent via Sendgrid API. With that purpose the companyCreated template was created. The emails are sent when a company gets created. The logic is written in the Company model class as an event handler. In the deployed version the email is sent on my personal email, which can easily be changed. The address is stored as an environment variable called `MAIL_REPORT_TO_ADDRESS`. 
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+**Note:** Sendgrid was used because the author did not want to enter his credit card in any more services. He already had the account on sendgrid.
 
-## Security Vulnerabilities
+#### Localization
+The app is available on two languages: English and Russian. The localization was implemented in a default way for laravel. Route responsible for the switching writes the selected language in session. The Localization middleware class is responsible for changing the app locale, which it takes from session.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+#### Image Storage
+There are currently two storage types configured for this app: local storage and amazon s3. You can select what fits you in the `FILESYSTEM_DRIVER` environment variable. In case of heroku deployed version of the app, s3 is used. Note that if you use an s3 bucket, you should provide a security policy for it, so that you can access files that are stored in it. The list of environment variables that should be configured is given later on this page. In case of local storage, the files are available publicly via symlink. 
 
-## License
+#### Testing
+For demo purposes and considering the lack of time, only the Auth test cases were created. These tests check if any route is available without authentication. This seems as not required at all, however an unexperienced developer can easily break auth logic, without anyone knowing. Tests are run with `php artisan test` command. Note that the test db name differs from the dev db and data stored in test db is deleted after the test is done. 
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+#### Environment Variables
+There is a list of variables that have to be configured in order for the application to function properly
+
+    APP_NAME="Evaluation CRM"
+    APP_URL=http://localhost
+ 
+    #Database connection props
+    DB_CONNECTION=mysql /*or the one you wish*/
+    DB_HOST= /*hostname*/
+    DB_PORT= /*port*/
+    DB_DATABASE /*db name*/
+    DB_DATABASE_TESTING= /*testing db name*/
+    DB_USERNAME= /*username*/
+    DB_PASSWORD= /*password*/
+    
+    
+    #Mail props
+    MAIL_MAILER=smtp
+    MAIL_HOST=smtp.sendgrid.net /*or any other*/
+    MAIL_PORT=587 /*or other*/
+    MAIL_USERNAME=/*"apikey" for sendgrid, or other*/
+    MAIL_PASSWORD=/*the api key for sendgrid or other*/
+    MAIL_ENCRYPTION=tls /*for sendgrid and for others probably*/
+    MAIL_FROM_ADDRESS=noreply@trvl.com /*FROM address of the mail*/
+    MAIL_FROM_NAME="${APP_NAME}" /* name of the sender*/
+    MAIL_REPORT_TO_ADDRESS=*/address to send the message*/
+    
+    SENDGRID_API_KEY= /*API Key generated for you by sendgrid*/
+    
+    #Storage settings
+    FILESYSTEM_DRIVER= /*local or s3*/
+    
+    AWS_ACCESS_KEY_ID= /*Access key ID generated by AWS*/
+    AWS_SECRET_ACCESS_KEY= /*Access key*/
+    AWS_DEFAULT_REGION=/*Bucket Region*/
+    AWS_BUCKET=/*Bucket Name*/
+    
+Other variables can be left by default.
+## Built With
+
+ 
+*  [Laravel](https://laravel.com/) - The web framework used
+
+*  [Vue](https://vuejs.org/) - Frontend JS framework
+* [Bootstrap](https://getbootstrap.com/) - Frontend toolkit
+  
+
+## Authors
+
+*  **Asad Zeynalov**
+
+## Acknowledgments
+
+  
+Thanks to thousands of stackoverflow users, whose answers were so useful when writing this app.
+
